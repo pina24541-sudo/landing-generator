@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Landing Page Generator</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body { font-family: 'Segoe UI', system-ui, sans-serif; }
+    .loader {
+      width: 28px;
+      height: 28px;
+      border: 3px solid #e5e7eb;
+      border-top-color: #2563eb;
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    #previewFrame {
+      width: 100%;
+      height: 80vh;
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      background: white;
+    }
+  </style>
+</head>
+<body class="bg-slate-100 min-h-screen">
+
+  <!-- Header -->
+  <header class="bg-white border-b border-slate-200 sticky top-0 z-50">
+    <div class="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
+      <div>
+        <h1 class="text-xl font-bold text-slate-800">AI Landing Page Generator</h1>
+        <p class="text-sm text-slate-500">Form → AI Generate → Preview → Download</p>
+      </div>
+      <div class="text-xs bg-emerald-50 text-emerald-700 px-3 py-1 rounded-full font-medium">
+        Powered by Groq (Gratis)
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-6xl mx-auto px-4 py-8">
+    <div class="grid grid-cols-1 lg:grid-cols-5 gap-8">
+
+      <!-- FORM -->
+      <div class="lg:col-span-2">
+        <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 sticky top-24">
+          <h2 class="text-lg font-semibold text-slate-800 mb-5">Data Landing Page</h2>
+
+          <form id="generateForm" class="space-y-4">
+
+            <!-- API Key -->
+            <div>
+              <label class="block text-sm font-medium text-slate-700 mb-1">
+                Groq API Key <span class="text-red-500">*</span>
+              </label>
+              <input type="password" id="apiKey" required
+                placeholder="gsk_xxxxxxxxxxxxxxxx"
+                class="w-full px-3 py-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none">
+              <p class="text-xs text-slate-500 mt-1">
+                Dapatkan gratis di 
+                <a href="https://console.groq.com/keys" target="_blank" class="text-blue-600 underline">console.groq.com/keys</a>
+              </p>
+            </div>
+
+            <hr class="border-slate-200">
+
+            <!-- Brand -->
+            <div>
+              <label class="block text-sm font-medium text-slate-700 mb-1">Nama Brand <span class="text-red-500">*</span></label>
+              <input type="text" id="brandName" required placeholder="Contoh: QUIZ4D"
+                class="w-full px-3 py-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none">
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-slate-700 mb-1">Tagline</label>
+              <input type="text" id="tagline" placeholder="Situs Slot Online Terpercaya"
+                class="w-full px-3 py-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none">
+            </div>
+
+            <div class="grid grid-cols-2 gap-3">
+              <div>
+                <label class="block text-sm font-medium text-slate-700 mb-1">Min. Deposit</label>
+                <input type="text" id="minDeposit" value="IDR 10.000"
+                  class="w-full px-3 py-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none">
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-slate-700 mb-1">Min. Withdraw</label>
+                <input type="text" id="minWithdraw" value="IDR 50.000"
+                  class="w-full px-3 py-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none">
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-slate-700 mb-1">Metode Pembayaran</label>
+              <input type="text" id="paymentMethods" value="Bank Transfer • E-Wallet • QRIS"
+                class="w-full px-3 py-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none">
+            </div>
+
+            <div class="grid grid-cols-2 gap-3">
+              <div>
+                <label class="block text-sm font-medium text-slate-700 mb-1">Rating</label>
+                <input type="text" id="rating" value="4.9"
+                  class="w-full px-3 py-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none">
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-slate-700 mb-1">Jumlah Review</label>
+                <input type="text" id="reviewCount" value="12.500+"
+                  class="w-full px-3 py-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none">
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-slate-700 mb-1">Kata Kunci Utama</label>
+              <input type="text" id="keywords" placeholder="slot gacor, situs terpercaya, maxwin"
+                class="w-full px-3 py-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none">
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-slate-700 mb-1">Tahun</label>
+              <input type="text" id="year" value="2026"
+                class="w-full px-3 py-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none">
+            </div>
+
+            <hr class="border-slate-200">
+
+            <div>
+              <label class="block text-sm font-medium text-slate-700 mb-1">Link Login</label>
+              <input type="url" id="loginUrl" placeholder="https://..."
+                class="w-full px-3 py-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none">
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-slate-700 mb-1">Link Daftar / Register</label>
+              <input type="url" id="registerUrl" placeholder="https://..."
+                class="w-full px-3 py-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none">
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-slate-700 mb-1">URL Logo</label>
+              <input type="url" id="logoUrl" placeholder="https://...logo.png"
+                class="w-full px-3 py-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none">
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-slate-700 mb-1">URL Gambar Hero</label>
+              <input type="url" id="heroImage" placeholder="https://...gambar.jpg"
+                class="w-full px-3 py-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none">
+            </div>
+
+            <!-- Submit -->
+            <button type="submit" id="btnGenerate"
+              class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-4 rounded-xl transition flex items-center justify-center gap-2">
+              <span id="btnText">Generate Landing Page</span>
+              <div id="btnLoader" class="loader hidden"></div>
+            </button>
+          </form>
+
+          <div id="errorBox" class="hidden mt-4 p-3 bg-red-50 border border-red-200 text-red-700 text-sm rounded-lg"></div>
+        </div>
+      </div>
+
+      <!-- PREVIEW -->
+      <div class="lg:col-span-3">
+        <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-5">
+          <div class="flex items-center justify-between mb-4">
+            <h2 class="text-lg font-semibold text-slate-800">Preview</h2>
+            <button id="btnDownload" disabled
+              class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 disabled:bg-slate-300 disabled:cursor-not-allowed text-white text-sm font-medium rounded-lg transition">
+              Download HTML
+            </button>
+          </div>
+
+          <div id="previewEmpty" class="flex flex-col items-center justify-center h-96 text-slate-400">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mb-4 opacity-40" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+            </svg>
+            <p class="text-sm">Hasil generate akan muncul di sini</p>
+          </div>
+
+          <iframe id="previewFrame" class="hidden"></iframe>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    const form = document.getElementById('generateForm');
+    const btnGenerate = document.getElementById('btnGenerate');
+    const btnText = document.getElementById('btnText');
+    const btnLoader = document.getElementById('btnLoader');
+    const btnDownload = document.getElementById('btnDownload');
+    const errorBox = document.getElementById('errorBox');
+    const previewEmpty = document.getElementById('previewEmpty');
+    const previewFrame = document.getElementById('previewFrame');
+
+    let generatedHtml = '';
+
+    // Simpan API key di localStorage
+    const savedKey = localStorage.getItem('groq_api_key');
+    if (savedKey) document.getElementById('apiKey').value = savedKey;
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      errorBox.classList.add('hidden');
+      
+      const apiKey = document.getElementById('apiKey').value.trim();
+      localStorage.setItem('groq_api_key', apiKey);
+
+      const payload = {
+        apiKey,
+        brandName: document.getElementById('brandName').value.trim(),
+        tagline: document.getElementById('tagline').value.trim(),
+        minDeposit: document.getElementById('minDeposit').value.trim(),
+        minWithdraw: document.getElementById('minWithdraw').value.trim(),
+        paymentMethods: document.getElementById('paymentMethods').value.trim(),
+        rating: document.getElementById('rating').value.trim(),
+        reviewCount: document.getElementById('reviewCount').value.trim(),
+        keywords: document.getElementById('keywords').value.trim(),
+        year: document.getElementById('year').value.trim(),
+        loginUrl: document.getElementById('loginUrl').value.trim() || '#',
+        registerUrl: document.getElementById('registerUrl').value.trim() || '#',
+        logoUrl: document.getElementById('logoUrl').value.trim(),
+        heroImage: document.getElementById('heroImage').value.trim(),
+        favicon: document.getElementById('logoUrl').value.trim()
+      };
+
+      // UI loading
+      btnGenerate.disabled = true;
+      btnText.textContent = 'Sedang generate...';
+      btnLoader.classList.remove('hidden');
+      btnDownload.disabled = true;
+
+      try {
+        const res = await fetch('/api/generate', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        const data = await res.json();
+
+        if (!res.ok) {
+          throw new Error(data.error || 'Gagal generate');
+        }
+
+        generatedHtml = data.html;
+
+        // Tampilkan preview
+        previewEmpty.classList.add('hidden');
+        previewFrame.classList.remove('hidden');
+        previewFrame.srcdoc = generatedHtml;
+
+        btnDownload.disabled = false;
+
+      } catch (err) {
+        errorBox.textContent = err.message;
+        errorBox.classList.remove('hidden');
+      } finally {
+        btnGenerate.disabled = false;
+        btnText.textContent = 'Generate Landing Page';
+        btnLoader.classList.add('hidden');
+      }
+    });
+
+    // Download
+    btnDownload.addEventListener('click', () => {
+      if (!generatedHtml) return;
+
+      const brand = document.getElementById('brandName').value.trim() || 'landing';
+      const blob = new Blob([generatedHtml], { type: 'text/html' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `${brand.toLowerCase().replace(/\s+/g, '-')}-landing.html`;
+      a.click();
+      URL.revokeObjectURL(url);
+    });
+  </script>
+</body>
+</html>
